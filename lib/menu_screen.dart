@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:learnfluuter_menudrawer/zoom_scaffold.dart';
 
 class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image: new AssetImage("images/bg_2.jpg"), fit: BoxFit.cover)),
-      child: Material(
-        color: Colors.transparent,
-        child: Stack(
-          children: <Widget>[createMenuTitle(), createMenuItem()],
-        ),
-      ),
+    return ZoomScaffolMenuController(
+        builder: (BuildContext context, MenuController menuController) {
+         return Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: new AssetImage("images/bg_2.jpg"),
+                    fit: BoxFit.cover)),
+            child: Material(
+              color: Colors.transparent,
+              child: Stack(
+                children: <Widget>[
+                  createMenuTitle(), createMenuItem(menuController)],
+              ),
+            ),
+          );
+        }
     );
   }
 
@@ -35,7 +42,7 @@ class MenuScreen extends StatelessWidget {
     );
   }
 
-  createMenuItem() {
+  createMenuItem(MenuController menuController) {
     return Transform(
       transform: Matrix4.translationValues(0.0, 255.0, 0.0),
       child: Column(
@@ -43,18 +50,30 @@ class MenuScreen extends StatelessWidget {
           _MenuListItem(
             title: "Social",
             isSelected: true,
+            onTap: () {
+              menuController.close();
+            },
           ),
           _MenuListItem(
             title: "Ecommerce",
             isSelected: false,
+            onTap: () {
+              menuController.close();
+            },
           ),
           _MenuListItem(
             title: "Inventory",
             isSelected: false,
+            onTap: () {
+              menuController.close();
+            },
           ),
           _MenuListItem(
             title: "Settings",
             isSelected: false,
+            onTap: () {
+              menuController.close();
+            },
           ),
         ],
       ),
@@ -65,13 +84,14 @@ class MenuScreen extends StatelessWidget {
 class _MenuListItem extends StatelessWidget {
   String title;
   bool isSelected;
+  Function() onTap;
 
-  _MenuListItem({this.title, this.isSelected});
+  _MenuListItem({this.title, this.isSelected, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return new InkWell(
-      onTap: isSelected ? null : () {},
+      onTap: isSelected ? null : onTap,
       splashColor: Color(0x44000000),
       child: Container(
         width: double.infinity,
